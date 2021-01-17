@@ -1,8 +1,8 @@
 # exe-docker
 
-Para criar o executavel deve substituir o arquivo de icone (favicon.ico) e editar o versioninfo.json com as informações do executavel.
+To create the executable you must replace the icon file (favicon.ico) and edit versioninfo.json with the executable information.
 
-Depois executar, irá criar o executavel em uma pasta output.
+After executing, it will create the executable in an output folder.
 
 ```
 docker-compose up --build
