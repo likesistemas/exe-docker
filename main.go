@@ -2,7 +2,7 @@
 
 package main
 
-import "github.com/likesistemas/exe"
+import "github.com/likesistemas/exe-jar-go"
 
 func main() {
 	exe.Open("eichefe", "EiChefe", "eichefe.jar")
