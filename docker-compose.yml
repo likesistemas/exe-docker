@@ -9,4 +9,13 @@ services:
       args:
         - CERTIFICATE_PASSWORD=$CERTIFICATE_PASSWORD
     volumes:
-      - ./output/:/output/
+      - ./output/golang/:/output/
+
+  build-netcore:
+    build:
+      context: ./netcore/
+      dockerfile: Dockerfile
+      args:
+        - CERTIFICATE_PASSWORD=$CERTIFICATE_PASSWORD
+    volumes:
+      - ./output/netcore/:/output/
