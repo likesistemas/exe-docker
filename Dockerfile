@@ -3,8 +3,11 @@ ARG EXE_NAME_X86=${EXE_NAME}-x86.exe
 ARG EXE_NAME_X64=${EXE_NAME}-x64.exe
 ARG EXE_NAME_X86_SIGNED=${EXE_NAME}-x86_signed.exe
 ARG EXE_NAME_X64_SIGNED=${EXE_NAME}-x64_signed.exe
-ARG CERTIFICATE_FILE=certificate.pfx
 ARG CERTIFICATE_PASSWORD=123456
+
+FROM likesistemas/exe-sign:latest as sign
+ARG CERTIFICATE_PASSWORD
+ENV CERT_PASSWORD=${CERTIFICATE_PASSWORD}
 
 FROM golang:alpine as compile
 ARG EXE_NAME_X86
@@ -21,24 +24,14 @@ RUN go generate
 RUN GOOS=windows GOARCH=386 go build -ldflags="-linkmode=internal -w -s -H=windowsgui" -o /go/bin/${EXE_NAME_X86}
 RUN GOOS=windows GOARCH=amd64 go build -ldflags="-linkmode=internal -w -s -H=windowsgui" -o /go/bin/${EXE_NAME_X64}
 
-FROM likesistemas/exe-sign:latest as sign-x86
+FROM sign as sign-x86
 ARG EXE_NAME_X86
-ARG CERT_FILE
-ARG CERT_PASSWORD
-
-WORKDIR /work/
-COPY ${CERTIFICATE_FILE} .
-COPY --from=compile /go/bin/${EXE_NAME_X86} ./${EXE_FILE}
+COPY --from=compile /go/bin/${EXE_NAME_X86} app.exe
 RUN sign
 
-FROM likesistemas/exe-sign:latest as sign-x64
+FROM sign as sign-x64
 ARG EXE_NAME_X64
-ARG CERTIFICATE_FILE
-ARG CERTIFICATE_PASSWORD
-
-WORKDIR /work/
-COPY ${CERTIFICATE_FILE} .
-COPY --from=compile /go/bin/${EXE_NAME_X64} ./${EXE_FILE}
+COPY --from=compile /go/bin/${EXE_NAME_X64} app.exe
 RUN sign
 
 FROM debian:10-slim

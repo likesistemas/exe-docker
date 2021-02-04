@@ -6,5 +6,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        - CERTIFICATE_PASSWORD=$CERTIFICATE_PASSWORD
     volumes:
       - ./output/:/output/
