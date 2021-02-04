@@ -15,9 +15,9 @@ ARG EXE_NAME_X64
 
 RUN apk update && apk add --no-cache git
 WORKDIR $GOPATH/src/likesistemas/exe/
+RUN go get github.com/josephspurrier/goversioninfo/cmd/goversioninfo
 COPY favicon.ico versioninfo.json ./
-RUN go get github.com/josephspurrier/goversioninfo/cmd/goversioninfo \
- && goversioninfo
+RUN goversioninfo
 COPY go.mod go.sum *.go ./
 RUN go get -d -v
 RUN go generate

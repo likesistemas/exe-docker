@@ -2,9 +2,9 @@ version: "3"
 
 services:
 
-  build-exe:
+  build-go:
     build:
-      context: .
+      context: ./golang/
       dockerfile: Dockerfile
       args:
         - CERTIFICATE_PASSWORD=$CERTIFICATE_PASSWORD
